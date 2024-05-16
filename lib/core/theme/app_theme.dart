@@ -13,6 +13,7 @@ class AppTheme {
     scaffoldBackgroundColor: AppPallete.backgroundColor,
     appBarTheme: const AppBarTheme(
       backgroundColor: AppPallete.backgroundColor,
+      surfaceTintColor: AppPallete.transparentColor,
     ),
     chipTheme: const ChipThemeData(
       color: MaterialStatePropertyAll(
