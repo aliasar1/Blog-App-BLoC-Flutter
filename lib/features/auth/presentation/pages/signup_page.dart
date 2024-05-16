@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_pallete.dart';
 import '../widgets/auth_gradient_button.dart';
 import '../widgets/auth_textfield.dart';
+import 'login_page.dart';
 
 class SignupPage extends StatefulWidget {
+  static route() => MaterialPageRoute(
+        builder: (context) => const SignupPage(),
+      );
   const SignupPage({super.key});
 
   @override
@@ -16,6 +20,14 @@ class _SignupPageState extends State<SignupPage> {
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passController.dispose();
+    _nameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +72,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // Navigator.push(context, LoginPage.route());
+                      Navigator.push(context, LoginPage.route());
                     },
                     child: RichText(
                       text: TextSpan(
