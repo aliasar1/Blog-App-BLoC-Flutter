@@ -21,9 +21,19 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<UserModel> loginWithEmailPassword(
-      {required Object email, required String password}) {
-    // TODO: implement loginWithEmailPassword
-    throw UnimplementedError();
+      {required String email, required String password}) async {
+    try {
+      final resp = await supabaseClient.auth
+          .signInWithPassword(password: password, email: email);
+      if (resp.user == null) {
+        throw const ServerException("User is null.");
+      }
+      return UserModel.fromJson(resp.user!.toJson());
+    } on AuthException catch (e) {
+      throw ServerException(e.message);
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
   }
 
   @override
@@ -40,6 +50,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw const ServerException("User is null.");
       }
       return UserModel.fromJson(response.user!.toJson());
+    } on AuthException catch (e) {
+      throw ServerException(e.message);
     } catch (e) {
       throw ServerException(e.toString());
     }

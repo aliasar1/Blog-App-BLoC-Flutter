@@ -11,9 +11,13 @@ class AuthRepositoryImp implements AuthRepository {
 
   @override
   Future<Either<Failure, User>> loginWithEmailPassword(
-      {required String email, required String password}) {
-    // TODO: implement loginWithEmailPassword
-    throw UnimplementedError();
+      {required String email, required String password}) async {
+    return _getUser(
+      () async => await authRemoteDataSource.loginWithEmailPassword(
+        email: email,
+        password: password,
+      ),
+    );
   }
 
   @override
@@ -21,12 +25,24 @@ class AuthRepositoryImp implements AuthRepository {
       {required String name,
       required String email,
       required String password}) async {
-    try {
-      final user = await authRemoteDataSource.signUpWithEmailPassword(
+    return _getUser(
+      () async => await authRemoteDataSource.signUpWithEmailPassword(
         name: name,
         email: email,
         password: password,
-      );
+      ),
+    );
+  }
+
+  Future<Either<Failure, User>> _getUser(
+    Future<User> Function() fn,
+  ) async {
+    try {
+      // if (!await (connectionChecker.isConnected)) {
+      //   return left(Failure(Constants.noConnectionErrorMessage));
+      // }
+      final user = await fn();
+
       return right(user);
     } on ServerException catch (e) {
       return left(Failure(e.message));
