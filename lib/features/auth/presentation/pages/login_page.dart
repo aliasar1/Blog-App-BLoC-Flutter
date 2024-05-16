@@ -3,7 +3,7 @@ import 'package:blog_app/features/auth/presentation/pages/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/common/app_widgets/loader.dart';
+import '../../../../core/common/widgets/loader.dart';
 import '../../../../core/theme/app_pallete.dart';
 import '../../../../core/utils/show_snackbar.dart';
 import '../widgets/auth_gradient_button.dart';
