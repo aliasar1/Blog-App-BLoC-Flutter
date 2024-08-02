@@ -42,6 +42,8 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
             image,
           );
       return supabaseClient.storage.from('blog_images').getPublicUrl(blog.id);
+    } on StorageException catch (e) {
+      throw ServerException(e.message);
     } catch (e) {
       throw ServerException(e.toString());
     }
