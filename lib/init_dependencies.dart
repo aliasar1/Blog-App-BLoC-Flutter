@@ -9,6 +9,7 @@ import 'package:blog_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog_app/features/blog/data/datasources/blog_remote_data_source.dart';
 import 'package:blog_app/features/blog/data/repositories/blog_repository_impl.dart';
 import 'package:blog_app/features/blog/domain/repository/blog_repository.dart';
+import 'package:blog_app/features/blog/domain/usecases/upload_blog.dart';
 import 'package:blog_app/features/blog/presentation/bloc/blog_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -28,7 +29,6 @@ Future<void> initDependencies() async {
 
   // core
   serviceLocator.registerLazySingleton(() => AppUserCubit());
-  serviceLocator.registerLazySingleton(() => BlogBloc());
 }
 
 void _initBlog() {
@@ -40,6 +40,14 @@ void _initBlog() {
     )
     ..registerFactory<BlogRepository>(
       () => BlogRepositoryImpl(
+        serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => UploadBlog(serviceLocator()),
+    )
+    ..registerLazySingleton(
+      () => BlogBloc(
         serviceLocator(),
       ),
     );

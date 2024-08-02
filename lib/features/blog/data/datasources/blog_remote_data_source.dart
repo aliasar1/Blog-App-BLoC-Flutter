@@ -21,8 +21,11 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   Future<BlogModel> uploadBlog(BlogModel blog) async {
     try {
       final blogData =
-          await supabaseClient.from('blogs').insert(blog.toJson).select();
+          await supabaseClient.from('blogs').insert(blog.toJson()).select();
+
       return BlogModel.fromJson(blogData.first);
+    } on PostgrestException catch (e) {
+      throw ServerException(e.message);
     } catch (e) {
       throw ServerException(e.toString());
     }
@@ -32,11 +35,11 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
   Future<String> uploadBlogImage(
       {required File image, required BlogModel blog}) async {
     try {
-      await supabaseClient.storage.from('blog_imgaes').upload(
+      await supabaseClient.storage.from('blog_images').upload(
             blog.id,
             image,
           );
-      return supabaseClient.storage.from('blog_imgaes').getPublicUrl(blog.id);
+      return supabaseClient.storage.from('blog_images').getPublicUrl(blog.id);
     } catch (e) {
       throw ServerException(e.toString());
     }
