@@ -41,6 +41,7 @@ dependencies:
   flutter_bloc: ^8.1.5
   dotted_border: ^2.1.0
   image_picker: ^1.0.7
+  uuid: ^4.4.2
 
 
 dev_dependencies:
